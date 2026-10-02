@@ -28,8 +28,8 @@ the PXVirt autoinstall feature to provide drivers to Windows Setup.
 Summary:        VirtIO drivers ISO for Windows guests (slim) for PXVirt
 
 %description iso
-ISO image with the same reduced set of virtio-win drivers as pxvirt-virtio-win,
-the QEMU guest agent and the virtio-win guest tools installers.
+ISO image with the same reduced set of virtio-win drivers and the QEMU guest
+agent as pxvirt-virtio-win.
 
 The image is installed as /var/lib/vz/template/iso/pxvirt-virtio-win.iso and
 can be attached to Windows guests as local:iso/pxvirt-virtio-win.iso.

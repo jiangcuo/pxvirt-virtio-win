@@ -13,8 +13,7 @@
 
 另有 `pxvirt-virtio-win-iso` 包，安装精简版 ISO 到
 `/var/lib/vz/template/iso/pxvirt-virtio-win.iso`，在界面上可以直接作为 `local:iso/pxvirt-virtio-win.iso`
-挂给 Windows 虚拟机。ISO 目录结构与官方 virtio-win ISO 相同，内容为上面的驱动和 qemu-ga，
-外加官方一键安装程序 `virtio-win-gt-x64.msi` 和 `virtio-win-guest-tools.exe`。文件名不带版本号，升级后已挂载的虚拟机无需修改配置。
+挂给 Windows 虚拟机。ISO 目录结构与官方 virtio-win ISO 相同，内容与驱动包一致（精简驱动和 qemu-ga）。文件名不带版本号，升级后已挂载的虚拟机无需修改配置。
 
 ## 版本
 
