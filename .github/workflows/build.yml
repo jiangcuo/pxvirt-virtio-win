@@ -1,0 +1,161 @@
+name: Build
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Publish a GitHub release with the packages
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        required: true
+      release:
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  slim:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      pinned: ${{ steps.version.outputs.pinned }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+
+      - id: version
+        run: |
+          . ./VERSION
+          echo "version=$VIRTIO_WIN_VERSION-$PKG_RELEASE" >> "$GITHUB_OUTPUT"
+          if [ -n "$VIRTIO_WIN_SHA256" ]; then
+            echo "pinned=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::no checksum pinned in VERSION yet - run the 'Update virtio-win' workflow"
+          fi
+
+      - if: steps.version.outputs.pinned == 'true'
+        uses: actions/cache@v4
+        with:
+          path: build/virtio-win-*.iso
+          key: virtio-win-iso-${{ hashFiles('VERSION') }}
+
+      - if: steps.version.outputs.pinned == 'true'
+        run: sudo apt-get update && sudo apt-get install -y libarchive-tools
+
+      - if: steps.version.outputs.pinned == 'true'
+        run: make slim
+
+      - if: steps.version.outputs.pinned == 'true'
+        run: |
+          du -sh build/virtio-win
+          tar -C build -cf virtio-win-slim.tar virtio-win
+
+      - if: steps.version.outputs.pinned == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: virtio-win-slim
+          path: virtio-win-slim.tar
+          retention-days: 3
+
+  deb:
+    needs: slim
+    if: needs.slim.outputs.pinned == 'true'
+    runs-on: ubuntu-latest
+    container: debian:bookworm
+    steps:
+      - run: apt-get update && apt-get install -y --no-install-recommends make debhelper dpkg-dev
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: virtio-win-slim
+
+      - name: Unpack drivers
+        run: |
+          mkdir -p build
+          tar -C build -xf virtio-win-slim.tar
+          # mark as up to date, so make does not try to download the ISO again
+          touch build/virtio-win/VERSION
+
+      - run: make deb
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb
+          path: build/out/*.deb
+
+  rpm:
+    needs: slim
+    if: needs.slim.outputs.pinned == 'true'
+    runs-on: ubuntu-latest
+    container: rockylinux:9
+    steps:
+      - run: dnf install -y make rpm-build tar gzip
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: virtio-win-slim
+
+      - name: Unpack drivers
+        run: |
+          mkdir -p build
+          tar -C build -xf virtio-win-slim.tar
+          touch build/virtio-win/VERSION
+
+      - run: make rpm
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpm
+          path: build/out/*.rpm
+
+  release:
+    needs: [slim, deb, rpm]
+    if: >-
+      needs.slim.outputs.pinned == 'true' &&
+      (inputs.release ||
+      (github.event_name == 'push' &&
+       github.ref == format('refs/heads/{0}', github.event.repository.default_branch)))
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: v${{ needs.slim.outputs.version }}
+    steps:
+      - id: check
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "release $TAG already exists, skipping"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.check.outputs.exists != 'true'
+        uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+          pattern: '{deb,rpm}'
+
+      - if: steps.check.outputs.exists != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: pxvirt-virtio-win ${{ needs.slim.outputs.version }}
+          target_commitish: ${{ inputs.ref || github.sha }}
+          files: out/*

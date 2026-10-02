@@ -1,0 +1,19 @@
+Source: pxvirt-virtio-win
+Section: misc
+Priority: optional
+Maintainer: Lierfang Support Team <itsupport@lierfang.com>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.2
+Homepage: https://github.com/virtio-win/kvm-guest-drivers-windows
+Rules-Requires-Root: no
+
+Package: pxvirt-virtio-win
+Architecture: all
+Depends: ${misc:Depends}
+Description: VirtIO drivers for Windows guests (slim) for PXVirt
+ A reduced set of the virtio-win drivers (viostor, vioscsi, NetKVM, Balloon,
+ vioserial) for Windows 10/11 and Server 2016-2025 on amd64 and ARM64, plus
+ the QEMU guest agent installer.
+ .
+ The drivers are installed to /usr/share/pve-manager/virtio-win/ and are used
+ by the PXVirt autoinstall feature to provide drivers to Windows Setup.

@@ -1,0 +1,16 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: virtio-win
+Source: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/
+
+Files: *
+Copyright: Red Hat, Inc. and the virtio-win contributors
+License: virtio-win
+ The drivers are distributed under the terms found in
+ /usr/share/pve-manager/virtio-win/virtio-win_license.txt, which is copied
+ unmodified from the virtio-win ISO.
+
+Files: debian/* rpm/* scripts/* Makefile VERSION slim.conf .github/*
+Copyright: Lierfang
+License: GPL-2+
+ On Debian systems the full text of the GNU General Public License version 2
+ can be found in /usr/share/common-licenses/GPL-2.
