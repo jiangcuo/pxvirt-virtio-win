@@ -57,6 +57,7 @@ fi
 
 cat > "$TOPDIR/VERSION" <<EOV
 # managed by scripts/update-version.sh - sourced by make and shell scripts
+# leave VIRTIO_WIN_SHA256 empty after changing the version, CI pins it on push
 VIRTIO_WIN_VERSION=$version
 VIRTIO_WIN_RELEASE=$release
 VIRTIO_WIN_SHA256=$sha256
