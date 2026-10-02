@@ -41,4 +41,6 @@ make clean
 - **Update virtio-win**（`.github/workflows/update.yml`）：每周一自动检查 stable 渠道，
   有新版本就提交到默认分支并构建、发布。也可以在 Actions 页面手动运行，选择渠道或指定版本。
 
+- 手动改 `VERSION` 里的版本号并把 `VIRTIO_WIN_SHA256` 留空后 push，CI 会自动下载 ISO、补上校验值并构建。
+
 自动提交需要默认分支允许 `github-actions[bot]` 推送（没有分支保护，或已加入例外）。

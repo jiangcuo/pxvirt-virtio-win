@@ -1,6 +1,9 @@
 name: Update virtio-win
 
 on:
+  # pin the checksum after VERSION was edited by hand (VIRTIO_WIN_SHA256 left empty)
+  push:
+    paths: [VERSION]
   schedule:
     - cron: '23 3 * * 1'
   workflow_dispatch:
@@ -31,7 +34,16 @@ jobs:
         env:
           CHANNEL: ${{ inputs.channel || 'stable' }}
           VERSION_INPUT: ${{ inputs.version }}
-        run: scripts/update-version.sh --channel "$CHANNEL" $VERSION_INPUT
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = push ]; then
+            . ./VERSION
+            if [ -n "$VIRTIO_WIN_SHA256" ]; then
+              echo "checksum already pinned"
+              exit 0
+            fi
+            VERSION_INPUT=$VIRTIO_WIN_VERSION
+          fi
+          scripts/update-version.sh --channel "$CHANNEL" $VERSION_INPUT
 
       # the build below reuses the ISO that was downloaded to compute the checksum
       - if: steps.update.outputs.changed == 'true'
