@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     container: debian:bookworm
     steps:
-      - run: apt-get update && apt-get install -y --no-install-recommends make debhelper dpkg-dev
+      - run: apt-get update && apt-get install -y --no-install-recommends build-essential debhelper dpkg-dev
 
       - uses: actions/checkout@v4
         with:
