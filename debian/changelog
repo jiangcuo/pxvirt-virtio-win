@@ -1,3 +1,9 @@
+pxvirt-virtio-win (0.1.271-3) bookworm; urgency=medium
+
+  * use qemu-ga 11.1.2-1 from jiangcuo/qemu-guest-agent for x86_64 and ARM64
+
+ -- Lierfang Support Team <itsupport@lierfang.com>  Fri, 02 Oct 2026 07:06:06 +0000
+
 pxvirt-virtio-win (0.1.271-2) bookworm; urgency=medium
 
   * add pxvirt-virtio-win-iso package with a slim ISO in

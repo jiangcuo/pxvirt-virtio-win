@@ -34,14 +34,17 @@ jobs:
         env:
           CHANNEL: ${{ inputs.channel || 'stable' }}
           VERSION_INPUT: ${{ inputs.version }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           if [ "$GITHUB_EVENT_NAME" = push ]; then
             . ./VERSION
-            if [ -n "$VIRTIO_WIN_SHA256" ]; then
-              echo "checksum already pinned"
+            if [ -n "$VIRTIO_WIN_SHA256" ] && [ -n "$QEMU_GA_SHA256_X86_64" ] \
+                && [ -n "$QEMU_GA_SHA256_ARM64" ]; then
+              echo "checksums already pinned"
               exit 0
             fi
-            VERSION_INPUT=$VIRTIO_WIN_VERSION
+            scripts/update-version.sh "$VIRTIO_WIN_VERSION" --qemu-ga "$QEMU_GA_VERSION"
+            exit 0
           fi
           scripts/update-version.sh --channel "$CHANNEL" $VERSION_INPUT
 

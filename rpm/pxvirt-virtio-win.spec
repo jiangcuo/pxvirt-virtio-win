@@ -51,6 +51,9 @@ install -D -m 0644 %{SOURCE1} %{buildroot}%{isodir}/pxvirt-virtio-win.iso
 %{isodir}/pxvirt-virtio-win.iso
 
 %changelog
+* Fri Oct 02 2026 Lierfang Support Team <itsupport@lierfang.com> - 0.1.271-3
+- use qemu-ga 11.1.2-1 from jiangcuo/qemu-guest-agent for x86_64 and ARM64
+
 * Fri Oct 02 2026 Lierfang Support Team <itsupport@lierfang.com> - 0.1.271-2
 - add pxvirt-virtio-win-iso package with a slim ISO in /var/lib/vz/template/iso
 

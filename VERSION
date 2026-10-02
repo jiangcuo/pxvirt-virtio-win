@@ -1,6 +1,9 @@
 # managed by scripts/update-version.sh - sourced by make and shell scripts
-# leave VIRTIO_WIN_SHA256 empty after changing the version, CI pins it on push
+# leave the checksums empty after changing a version, CI pins them on push
 VIRTIO_WIN_VERSION=0.1.271
 VIRTIO_WIN_RELEASE=1
 VIRTIO_WIN_SHA256=bbe6166ad86a490caefad438fef8aa494926cb0a1b37fa1212925cfd81656429
-PKG_RELEASE=2
+QEMU_GA_VERSION=11.1.2-1
+QEMU_GA_SHA256_X86_64=fe11a60e17a0cdf9995175f98f1407989dfbf7ff5586d057c5df2230c52ac19e
+QEMU_GA_SHA256_ARM64=294c7b0ba7058fe9a4a7b814a3bd4ee5bb142be2fba86cb3ed0dd4fa3a725727
+PKG_RELEASE=3

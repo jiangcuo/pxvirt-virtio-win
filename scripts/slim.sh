@@ -42,6 +42,12 @@ for file in $EXTRA_FILES; do
     fi
 done
 
+# guest agent installers from the qemu-guest-agent repository
+mkdir -p "$out/guest-agent"
+for arch in x86_64 arm64; do
+    cp "$(qemu_ga_path "$QEMU_GA_VERSION" "$arch")" "$out/guest-agent/qemu-ga-$arch.msi"
+done
+
 # remove debug symbols, they are not needed for installation
 find "$out" -type f -iname '*.pdb' -delete
 
