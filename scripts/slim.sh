@@ -10,8 +10,9 @@ iso=$(iso_path "$VIRTIO_WIN_VERSION")
 
 extract="$BUILDDIR/iso"
 out="$BUILDDIR/virtio-win"
-rm -rf "$extract" "$out"
-mkdir -p "$extract" "$out"
+iso_extra="$BUILDDIR/iso-extra"
+rm -rf "$extract" "$out" "$iso_extra"
+mkdir -p "$extract" "$out" "$iso_extra"
 
 bsdtar -xf "$iso" -C "$extract"
 chmod -R u+w "$extract"
@@ -42,12 +43,20 @@ for file in $EXTRA_FILES; do
     fi
 done
 
+for file in $ISO_EXTRA_FILES; do
+    if [ -f "$extract/$file" ]; then
+        cp "$extract/$file" "$iso_extra/"
+    else
+        echo "warning: '$file' not found on ISO, skipping" >&2
+    fi
+done
+
 # remove debug symbols, they are not needed for installation
 find "$out" -type f -iname '*.pdb' -delete
 
 echo "$VIRTIO_WIN_VERSION" > "$out/VERSION"
-find "$out" -type d -exec chmod 0755 {} +
-find "$out" -type f -exec chmod 0644 {} +
+find "$out" "$iso_extra" -type d -exec chmod 0755 {} +
+find "$out" "$iso_extra" -type f -exec chmod 0644 {} +
 
 rm -rf "$extract"
 du -sh "$out"

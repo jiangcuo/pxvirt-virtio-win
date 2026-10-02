@@ -17,3 +17,14 @@ Description: VirtIO drivers for Windows guests (slim) for PXVirt
  .
  The drivers are installed to /usr/share/pve-manager/virtio-win/ and are used
  by the PXVirt autoinstall feature to provide drivers to Windows Setup.
+
+Package: pxvirt-virtio-win-iso
+Architecture: all
+Depends: ${misc:Depends}
+Description: VirtIO drivers ISO for Windows guests (slim) for PXVirt
+ ISO image with the same reduced set of virtio-win drivers as
+ pxvirt-virtio-win, the QEMU guest agent and the virtio-win guest tools
+ installers.
+ .
+ The image is installed as /var/lib/vz/template/iso/pxvirt-virtio-win.iso and
+ can be attached to Windows guests as local:iso/pxvirt-virtio-win.iso.

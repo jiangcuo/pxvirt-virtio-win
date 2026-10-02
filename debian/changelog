@@ -1,3 +1,10 @@
+pxvirt-virtio-win (0.1.271-2) bookworm; urgency=medium
+
+  * add pxvirt-virtio-win-iso package with a slim ISO in
+    /var/lib/vz/template/iso/pxvirt-virtio-win.iso
+
+ -- Lierfang Support Team <itsupport@lierfang.com>  Fri, 02 Oct 2026 06:21:57 +0000
+
 pxvirt-virtio-win (0.1.271-1) bookworm; urgency=medium
 
   * initial release

@@ -11,6 +11,11 @@
 
 保留哪些内容由 [`slim.conf`](slim.conf) 控制。
 
+另有 `pxvirt-virtio-win-iso` 包，安装精简版 ISO 到
+`/var/lib/vz/template/iso/pxvirt-virtio-win.iso`，在界面上可以直接作为 `local:iso/pxvirt-virtio-win.iso`
+挂给 Windows 虚拟机。ISO 目录结构与官方 virtio-win ISO 相同，内容为上面的驱动和 qemu-ga，
+外加官方一键安装程序 `virtio-win-gt-x64.msi` 和 `virtio-win-guest-tools.exe`。文件名不带版本号，升级后已挂载的虚拟机无需修改配置。
+
 ## 版本
 
 [`VERSION`](VERSION) 固定 virtio-win 的版本、上游 release 和 ISO 的 sha256，
@@ -26,11 +31,11 @@ scripts/update-version.sh 0.1.271            # 指定版本
 
 ## 本地构建
 
-依赖：`curl`、`bsdtar`（libarchive-tools）、`make`，deb 需要 `debhelper dpkg-dev`，rpm 需要 `rpm-build`。
+依赖：`curl`、`bsdtar`（libarchive-tools）、`xorriso`、`make`，deb 需要 `debhelper dpkg-dev`，rpm 需要 `rpm-build`。
 
 ```sh
-make deb      # build/out/pxvirt-virtio-win_<版本>_all.deb
-make rpm      # build/out/pxvirt-virtio-win-<版本>.noarch.rpm
+make deb      # build/out/pxvirt-virtio-win{,-iso}_<版本>_all.deb
+make rpm      # build/out/pxvirt-virtio-win{,-iso}-<版本>.noarch.rpm
 make clean
 ```
 

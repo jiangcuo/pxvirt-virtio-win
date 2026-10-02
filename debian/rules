@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 
 DESTDIR = debian/pxvirt-virtio-win/usr/share/pve-manager
+ISODIR = debian/pxvirt-virtio-win-iso/var/lib/vz/template/iso
 
 %:
 	dh $@
@@ -14,6 +15,8 @@ override_dh_auto_install:
 	test -f build/virtio-win/VERSION || (echo "run 'make slim' first" && false)
 	install -d $(DESTDIR)
 	cp -r build/virtio-win $(DESTDIR)/virtio-win
+	test -f build/pxvirt-virtio-win.iso || (echo "run 'make iso' first" && false)
+	install -D -m 0644 build/pxvirt-virtio-win.iso $(ISODIR)/pxvirt-virtio-win.iso
 
 # these are Windows binaries
 override_dh_strip:

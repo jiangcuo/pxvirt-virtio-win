@@ -50,15 +50,15 @@ jobs:
           key: virtio-win-iso-${{ hashFiles('VERSION') }}
 
       - if: steps.version.outputs.pinned == 'true'
-        run: sudo apt-get update && sudo apt-get install -y libarchive-tools
+        run: sudo apt-get update && sudo apt-get install -y libarchive-tools xorriso
 
       - if: steps.version.outputs.pinned == 'true'
-        run: make slim
+        run: make slim iso
 
       - if: steps.version.outputs.pinned == 'true'
         run: |
-          du -sh build/virtio-win
-          tar -C build -cf virtio-win-slim.tar virtio-win
+          du -sh build/virtio-win build/pxvirt-virtio-win.iso
+          tar -C build -cf virtio-win-slim.tar virtio-win pxvirt-virtio-win.iso
 
       - if: steps.version.outputs.pinned == 'true'
         uses: actions/upload-artifact@v4
@@ -88,7 +88,7 @@ jobs:
           mkdir -p build
           tar -C build -xf virtio-win-slim.tar
           # mark as up to date, so make does not try to download the ISO again
-          touch build/virtio-win/VERSION
+          touch build/virtio-win/VERSION build/pxvirt-virtio-win.iso
 
       - run: make deb
 
@@ -117,7 +117,7 @@ jobs:
         run: |
           mkdir -p build
           tar -C build -xf virtio-win-slim.tar
-          touch build/virtio-win/VERSION
+          touch build/virtio-win/VERSION build/pxvirt-virtio-win.iso
 
       - run: make rpm
 
