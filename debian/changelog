@@ -1,0 +1,30 @@
+pxvirt-virtio-win (0.1.302-2) bookworm; urgency=medium
+
+  * update qemu-ga to 11.1.3-1
+
+ -- Lierfang Support Team <itsupport@lierfang.com>  Mon, 09 Nov 2026 11:51:31 +0000
+
+pxvirt-virtio-win (0.1.302-1) bookworm; urgency=medium
+
+  * update to virtio-win 0.1.302-1
+
+ -- Lierfang Support Team <itsupport@lierfang.com>  Mon, 05 Oct 2026 10:40:13 +0000
+
+pxvirt-virtio-win (0.1.271-3) bookworm; urgency=medium
+
+  * use qemu-ga 11.1.2-1 from jiangcuo/qemu-guest-agent for x86_64 and ARM64
+
+ -- Lierfang Support Team <itsupport@lierfang.com>  Fri, 02 Oct 2026 07:06:06 +0000
+
+pxvirt-virtio-win (0.1.271-2) bookworm; urgency=medium
+
+  * add pxvirt-virtio-win-iso package with a slim ISO in
+    /var/lib/vz/template/iso/pxvirt-virtio-win.iso
+
+ -- Lierfang Support Team <itsupport@lierfang.com>  Fri, 02 Oct 2026 06:21:57 +0000
+
+pxvirt-virtio-win (0.1.271-1) bookworm; urgency=medium
+
+  * initial release
+
+ -- Lierfang Support Team <itsupport@lierfang.com>  Fri, 02 Oct 2026 05:53:27 +0000

@@ -1,0 +1,7 @@
+/build/
+/debian/pxvirt-virtio-win/
+/debian/.debhelper/
+/debian/files
+/debian/*.substvars
+/debian/*.debhelper.log
+/debian/debhelper-build-stamp
